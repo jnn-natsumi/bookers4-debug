@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   	@user = User.find(params[:id])
   	@book = Book.new #new bookの新規投稿で必要（保存処理はbookコントローラー側で実施）
     # @books = @user.books
-    @books = current_user.books
+    @books = @user.books
   end
 
   def index
@@ -36,6 +36,18 @@ class UsersController < ApplicationController
     unless @user.id == current_user.id
       redirect_to user_path(current_user.id)
     end
+  end
+
+  # フォロー・フォロワー一覧の実装
+# フォローしている　＝　folloeing,follows
+  def follows
+    user = User.find(params[:id])
+    @users = user.followings
+  end
+# フォローされている　＝　followers
+  def followers
+    user = User.find(params[:id])
+    @users = user.followers
   end
 
   private
